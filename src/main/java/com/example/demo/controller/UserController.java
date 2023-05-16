@@ -6,11 +6,14 @@ import com.example.demo.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @RequestMapping("/user")
 @RestController
 public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/add")
     public User addUser(@RequestBody User user) {
         return userServiceImpl.addUser(user);
@@ -39,13 +42,20 @@ public class UserController {
     }
 
     @GetMapping("/getByName")
-    public User getByName() {
-        return null;
+    public List<User> getByName(@RequestParam (value = "name") String name ) {
+        return userServiceImpl.findByName(name);
     }
+
     @GetMapping("/getByGender")
-    public Iterable<User> getByGender() {
-        return null;
+    public List<User> getByGender(@RequestParam (value = "gender") String gender ) {
+        return userServiceImpl.findBySex(gender);
     }
+
+    @GetMapping("/getByAge")
+    public List<User> getByAge(@RequestParam (value = "age") int age ) {
+        return userServiceImpl.findByAge(age);
+    }
+
 
 
 }

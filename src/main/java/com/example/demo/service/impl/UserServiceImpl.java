@@ -20,6 +20,21 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
+    @Override
+    public List<User> findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    @Override
+    public List<User> findBySex(String gender) {
+        return userRepository.findBySex(gender);
+    }
+
+    @Override
+    public List<User> findByAge(int age) {
+        return userRepository.findByAge(age);
+    }
+
     //return all users
     @Override
     public Iterable<User> findAllUsers() {
@@ -27,6 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //add a user
+    @Override
     public User addUser(User user) {
         User newUser = new User();
         newUser.setAge(user.getAge());
@@ -34,6 +50,7 @@ public class UserServiceImpl implements UserService {
         newUser.setSex(user.getSex());
         newUser.setAdministrator(false);
         newUser.setCreateTime(LocalDateTime.now());
+        newUser.setPassword(user.getPassword());
         return userRepository.save(newUser);
     }
 
