@@ -1,10 +1,14 @@
 package com.example.demo.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Getter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,62 +35,6 @@ public class User {
 
     @Column(name = "password")
     private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return CreateTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        CreateTime = createTime;
-    }
-
-    public Boolean getAdministrator() {
-        return Administrator;
-    }
-
-    public void setAdministrator(Boolean administrator) {
-        Administrator = administrator;
-    }
 
     @Override
     public String toString() {
