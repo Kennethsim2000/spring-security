@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findBySex(String gender) {
+        System.out.println(gender);
         return userRepository.findBySex(gender);
     }
 
@@ -80,6 +81,7 @@ public class UserServiceImpl implements UserService {
 
 
     //delete the user based on id
+    @Override
     public String deleteUser(long id) {
         userRepository.deleteById(id);
         return "Tutor removed !! " + id;

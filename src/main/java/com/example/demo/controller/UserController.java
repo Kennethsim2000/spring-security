@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.UserNotFoundException;
+import com.example.demo.config.CommonResult;
 import com.example.demo.dto.DeletedUserDto;
 import com.example.demo.dto.FilterDto;
 import com.example.demo.dto.NewUserDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.models.User;
 import com.example.demo.service.impl.UserServiceImpl;
+import com.example.demo.vo.UserVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +43,7 @@ public class UserController {
     @DeleteMapping(path="/delete") // Map ONLY DELETE Requests
     public @ResponseBody String deleteUser (@RequestBody DeletedUserDto deletedUser) {
         if(userServiceImpl.existsById(deletedUser.getId())){
-            userServiceImpl.deleteById(deletedUser.getId());
+            userServiceImpl.deleteUser(deletedUser.getId());
             return "Deleted";
         } else {
             return "User not found";
@@ -57,7 +59,6 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getByGender")
     public List<User> getByGender(@RequestBody FilterDto filter ) {
-        System.out.println(filter);
         return userServiceImpl.findBySex(filter.getGender());
     }
 
@@ -69,8 +70,16 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/update")
-    public @ResponseBody User updateUser(@RequestBody UserDto user) {
-        return userServiceImpl.updateUser(user);
+    public CommonResult<UserVo> updateUser(@RequestBody UserDto user) {
+        User updatedUser = userServiceImpl.updateUser(user);
+        UserVo userResponse = UserVo.builder()
+                .id(updatedUser.getId())
+                .name(updatedUser.getName())
+                .age(updatedUser.getAge())
+                .createTime(updatedUser.getCreateTime())
+                .administrator(updatedUser.getAdministrator())
+                .build();
+        return CommonResult.success(userResponse, "User updated successfully");
     }
 
 
