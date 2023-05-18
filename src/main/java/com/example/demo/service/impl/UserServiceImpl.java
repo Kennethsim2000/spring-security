@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.UserNotFoundException;
+import com.example.demo.dto.NewUserDto;
+import com.example.demo.dto.UserDto;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     //add a user
     @Override
-    public User addUser(User user) {
+    public User addUser(NewUserDto user) {
         User newUser = new User();
         newUser.setAge(user.getAge());
         newUser.setName(user.getName());
@@ -53,6 +55,29 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(user.getPassword());
         return userRepository.save(newUser);
     }
+
+    @Override
+    public User updateUser(UserDto user) {
+        User selectedUser =  userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+        System.out.println(user.toString());
+        System.out.println(selectedUser.toString());
+        if (!selectedUser.getName().equals(user.getName())) {
+            selectedUser.setName(user.getName());
+        }
+        if (selectedUser.getAge() != user.getAge()) {
+            selectedUser.setAge(user.getAge());
+        }
+        if (!selectedUser.getSex().equals(user.getSex())) {
+            selectedUser.setSex(user.getSex());
+        }
+        if (!selectedUser.getAdministrator().equals(user.getAdministrator())) {
+            selectedUser.setAdministrator(user.getAdministrator());
+        }
+        System.out.println(selectedUser.toString());
+        return userRepository.save(selectedUser);
+    }
+
 
     //delete the user based on id
     public String deleteUser(long id) {

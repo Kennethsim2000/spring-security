@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.UserNotFoundException;
 import com.example.demo.dto.DeletedUserDto;
+import com.example.demo.dto.FilterDto;
+import com.example.demo.dto.NewUserDto;
+import com.example.demo.dto.UserDto;
 import com.example.demo.models.User;
 import com.example.demo.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +19,7 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/add")
-    public User addUser(@RequestBody User user) {
+    public User addUser(@RequestBody NewUserDto user) {
         return userServiceImpl.addUser(user);
     }
     //get all
@@ -46,23 +49,29 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/getByName")
-    public List<User> getByName(@RequestParam (value = "name") String name ) {
-        return userServiceImpl.findByName(name);
+    @PostMapping("/getByName")
+    public List<User> getByName(@RequestBody FilterDto filter ) {
+        return userServiceImpl.findByName(filter.getName());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/getByGender")
-    public List<User> getByGender(@RequestParam (value = "gender") String gender ) {
-        return userServiceImpl.findBySex(gender);
+    @PostMapping("/getByGender")
+    public List<User> getByGender(@RequestBody FilterDto filter ) {
+        System.out.println(filter);
+        return userServiceImpl.findBySex(filter.getGender());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/getByAge")
+    @PostMapping("/getByAge")
     public List<User> getByAge(@RequestParam (value = "age") int age ) {
         return userServiceImpl.findByAge(age);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/update")
+    public @ResponseBody User updateUser(@RequestBody UserDto user) {
+        return userServiceImpl.updateUser(user);
+    }
 
 
 }

@@ -45,6 +45,7 @@ public class User {
                 ", sex='" + sex + '\'' +
                 ", CreateTime=" + CreateTime +
                 ", Administrator=" + Administrator +
+                ", password=" + password +
                 '}';
     }
 }
