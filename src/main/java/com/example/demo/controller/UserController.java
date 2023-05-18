@@ -2,13 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.UserNotFoundException;
 import com.example.demo.config.CommonResult;
-import com.example.demo.dto.DeletedUserDto;
-import com.example.demo.dto.FilterDto;
-import com.example.demo.dto.NewUserDto;
-import com.example.demo.dto.UserDto;
+import com.example.demo.dto.*;
 import com.example.demo.models.User;
 import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.vo.ListUserVo;
+import com.example.demo.vo.LoginVo;
 import com.example.demo.vo.UserVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +110,20 @@ public class UserController {
                 .administrator(updatedUser.getAdministrator())
                 .build();
         return CommonResult.success(userResponse, "User updated successfully");
+    }
+
+    @PostMapping("/login")
+    public CommonResult<LoginVo> getById(@RequestBody LoginUserDto loginUser) {
+        boolean userFound = userServiceImpl.findUser(loginUser.getName(), loginUser.getPassword());
+        LoginVo loginResponse = LoginVo.builder()
+                .login(userFound)
+                .build();
+        if(userFound) {
+            return CommonResult.success(loginResponse, "Login success");
+        } else {
+            return CommonResult.failed(404,"Login unsuccessful");
+        }
+
     }
 
 

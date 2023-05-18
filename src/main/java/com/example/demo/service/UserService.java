@@ -21,5 +21,6 @@ public interface UserService {
 
     User deleteById(long id);
 
+    boolean findUser(String name, String password);
 
 }

@@ -102,4 +102,9 @@ public class UserServiceImpl implements UserService {
         return deletedUser.orElse(null);
     }
 
+    @Override
+    public boolean findUser(String name, String password) {
+        return userRepository.findByNameAndPassword(name, password);
+    }
+
 }

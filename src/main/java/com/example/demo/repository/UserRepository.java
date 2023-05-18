@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.age >= :age")
     List<User> findByAge(int age);
 
+//    @Query("SELECT u FROM User u WHERE u.name == :name and u.password == password")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.name = :name AND u.password = :password")
+    boolean findByNameAndPassword(String name, String password);
+
 }
