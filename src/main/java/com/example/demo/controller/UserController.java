@@ -8,67 +8,99 @@ import com.example.demo.dto.NewUserDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.models.User;
 import com.example.demo.service.impl.UserServiceImpl;
+import com.example.demo.vo.ListUserVo;
 import com.example.demo.vo.UserVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/user")
 @RestController
 public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/add")
-    public User addUser(@RequestBody NewUserDto user) {
-        return userServiceImpl.addUser(user);
+    public CommonResult<UserVo> addUser(@RequestBody NewUserDto user) {
+        User newUser = userServiceImpl.addUser(user);
+        UserVo userResponse = UserVo.builder()
+                .id(newUser.getId())
+                .name(newUser.getName())
+                .age(newUser.getAge())
+                .createTime(newUser.getCreateTime())
+                .administrator(newUser.getAdministrator())
+                .build();
+        return CommonResult.success(userResponse, "User added");
     }
     //get all
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getAll")
-    @ResponseBody
-    public Iterable<User> getAllUsers() {
-        return userServiceImpl.findAllUsers();
+    public CommonResult<ListUserVo> getAllUsers() {
+        List<User> lst = userServiceImpl.findAllUsers();
+        ListUserVo userListResponse = ListUserVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(userListResponse, "users returned");
     }
 
     @GetMapping("/getById")
-    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
-    public User getById(@RequestParam (value = "userId") long userId) {
-        return userServiceImpl.findById(userId);
+    public CommonResult<UserVo> getById(@RequestParam (value = "userId") long userId) {
+        User user = userServiceImpl.findById(userId);
+        UserVo userResponse = UserVo.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .age(user.getAge())
+                .createTime(user.getCreateTime())
+                .administrator(user.getAdministrator())
+                .build();
+        return CommonResult.success(userResponse, "User found");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(path="/delete") // Map ONLY DELETE Requests
-    public @ResponseBody String deleteUser (@RequestBody DeletedUserDto deletedUser) {
-        if(userServiceImpl.existsById(deletedUser.getId())){
-            userServiceImpl.deleteUser(deletedUser.getId());
-            return "Deleted";
+    public CommonResult<UserVo> deleteUser (@RequestBody DeletedUserDto deletedUser) {
+        if(userServiceImpl.existsById(deletedUser.getId())){ //if user exists
+            User user = userServiceImpl.deleteUser(deletedUser.getId());
+            UserVo userResponse = UserVo.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .age(user.getAge())
+                    .createTime(user.getCreateTime())
+                    .administrator(user.getAdministrator())
+                    .build();
+            return CommonResult.success(userResponse, "User updated successfully");
         } else {
-            return "User not found";
+            return CommonResult.failed(404,"User does not exist");
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getByName")
-    public List<User> getByName(@RequestBody FilterDto filter ) {
-        return userServiceImpl.findByName(filter.getName());
+    public CommonResult<ListUserVo> getByName(@RequestBody FilterDto filter ) {
+        List<User> lst = userServiceImpl.findByName(filter.getName());
+        ListUserVo userListResponse = ListUserVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(userListResponse, "users returned");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getByGender")
-    public List<User> getByGender(@RequestBody FilterDto filter ) {
-        return userServiceImpl.findBySex(filter.getGender());
+    public CommonResult<ListUserVo> getByGender(@RequestBody FilterDto filter ) {
+        List<User> lst =  userServiceImpl.findBySex(filter.getGender());
+        ListUserVo userListResponse = ListUserVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(userListResponse, "users returned");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getByAge")
-    public List<User> getByAge(@RequestParam (value = "age") int age ) {
-        return userServiceImpl.findByAge(age);
+    public CommonResult<ListUserVo> getByAge(@RequestParam (value = "age") int age ) {
+        List<User> lst = userServiceImpl.findByAge(age);
+        ListUserVo userListResponse = ListUserVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(userListResponse, "users returned");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/update")
     public CommonResult<UserVo> updateUser(@RequestBody UserDto user) {
         User updatedUser = userServiceImpl.updateUser(user);

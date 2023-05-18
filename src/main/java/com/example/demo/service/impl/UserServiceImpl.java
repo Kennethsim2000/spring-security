@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     //return all users
     @Override
-    public Iterable<User> findAllUsers() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
@@ -82,9 +82,10 @@ public class UserServiceImpl implements UserService {
 
     //delete the user based on id
     @Override
-    public String deleteUser(long id) {
+    public User deleteUser(long id) {
+        User user = userRepository.findById(id).orElse(null);
         userRepository.deleteById(id);
-        return "Tutor removed !! " + id;
+        return user;
     }
 
     //returns if such a user exist
@@ -101,9 +102,4 @@ public class UserServiceImpl implements UserService {
         return deletedUser.orElse(null);
     }
 
-    //Retrieve user by id
-    public User findUserById(long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-    }
 }

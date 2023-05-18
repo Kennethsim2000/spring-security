@@ -12,11 +12,11 @@ public interface UserService {
     List<User> findByName(String name);
     List<User> findBySex(String sex);
     List<User> findByAge(int age);
-    Iterable<User> findAllUsers();
+    List<User> findAllUsers();
     User addUser(NewUserDto user);
 
     User updateUser(UserDto user);
-    String deleteUser(long id);
+    User deleteUser(long id);
     Boolean existsById(long id);
 
     User deleteById(long id);
