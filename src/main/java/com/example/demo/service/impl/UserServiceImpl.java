@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findBySex(String gender) {
-        System.out.println(gender);
         return userRepository.findBySex(gender);
     }
 
@@ -61,20 +60,10 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserDto user) {
         User selectedUser =  userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
-        System.out.println(user.toString());
-        System.out.println(selectedUser.toString());
-        if (!selectedUser.getName().equals(user.getName())) {
-            selectedUser.setName(user.getName());
-        }
-        if (selectedUser.getAge() != user.getAge()) {
-            selectedUser.setAge(user.getAge());
-        }
-        if (!selectedUser.getSex().equals(user.getSex())) {
-            selectedUser.setSex(user.getSex());
-        }
-        if (!selectedUser.getAdministrator().equals(user.getAdministrator())) {
-            selectedUser.setAdministrator(user.getAdministrator());
-        }
+        selectedUser.setName(user.getName());
+        selectedUser.setAge(user.getAge());
+        selectedUser.setSex(user.getSex());
+        selectedUser.setAdministrator(user.getAdministrator());
         System.out.println(selectedUser.toString());
         return userRepository.save(selectedUser);
     }

@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.UserNotFoundException;
 import com.example.demo.config.CommonResult;
 import com.example.demo.dto.*;
 import com.example.demo.models.User;
