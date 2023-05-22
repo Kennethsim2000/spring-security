@@ -53,9 +53,10 @@ public class UserServiceImpl implements UserService {
     //add a user
     @Override
     public User addUser(NewUserDto user) {
+        if(userRepository.existsByName(user.getName())) {
+            return null;
+        }
         User newUser = new User();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate dob = LocalDate.parse(user.getDob(), formatter);
         newUser.setDob(user.getDob());
         newUser.setName(user.getName());
         newUser.setSex(user.getSex());
@@ -102,7 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean findUser(String name, String password) {
+    public User findUser(String name, String password) {
         return userRepository.findByNameAndPassword(name, password);
     }
 

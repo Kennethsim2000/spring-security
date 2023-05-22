@@ -1,5 +1,6 @@
 package com.example.demo.vo;
 
+import com.example.demo.models.User;
 import lombok.*;
 
 @Getter
@@ -8,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginVo {
-    private boolean login;
+    private User loginUser;
+    private String token;
 }

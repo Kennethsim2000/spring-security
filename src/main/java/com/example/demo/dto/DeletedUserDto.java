@@ -9,4 +9,5 @@ import java.io.Serializable;
 @Setter
 public class DeletedUserDto implements Serializable {
     private Long id;
+    private String token;
 }

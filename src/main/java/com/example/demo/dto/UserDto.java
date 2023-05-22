@@ -19,5 +19,6 @@ public class UserDto {
     private Integer sex;
     private LocalDateTime createTime;
     private Boolean Administrator;
+    private String token;
 
 }
