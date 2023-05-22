@@ -9,7 +9,9 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -28,14 +30,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findBySex(String gender) {
+    public List<User> findBySex(Integer gender) {
         return userRepository.findBySex(gender);
     }
 
     @Override
-    public List<User> findByAge(int age) {
-        return userRepository.findByAge(age);
+    public List<User> findByDob(LocalDate startDate, LocalDate endDate) {
+        return userRepository.findByDob(startDate, endDate);
     }
+
+//    @Override
+//    public List<User> findByAge(int age) {
+//        return userRepository.findByAge(age);
+//    }
 
     //return all users
     @Override
@@ -47,7 +54,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(NewUserDto user) {
         User newUser = new User();
-        newUser.setAge(user.getAge());
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate dob = LocalDate.parse(user.getDob(), formatter);
+        newUser.setDob(user.getDob());
         newUser.setName(user.getName());
         newUser.setSex(user.getSex());
         newUser.setAdministrator(false);
@@ -60,11 +69,12 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserDto user) {
         User selectedUser =  userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate dob = LocalDate.parse(user.getDob(), formatter);
         selectedUser.setName(user.getName());
-        selectedUser.setAge(user.getAge());
+        selectedUser.setDob(user.getDob());
         selectedUser.setSex(user.getSex());
         selectedUser.setAdministrator(user.getAdministrator());
-        System.out.println(selectedUser.toString());
         return userRepository.save(selectedUser);
     }
 

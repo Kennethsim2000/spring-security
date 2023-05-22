@@ -4,23 +4,20 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
 public class UserDto {
-    private long id;
+    private Long id;
     private String name;
-    private int age;
-    private String sex;
+    private LocalDate dob;
+    private Integer sex;
     private LocalDateTime createTime;
-    private boolean Administrator;
-    public void setAdministrator(boolean administrator) {
-        Administrator = administrator;
-    }
-    public boolean getAdministrator() {
-        return Administrator;
-    }
+    private Boolean Administrator;
+
 }

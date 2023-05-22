@@ -4,14 +4,15 @@ import com.example.demo.dto.NewUserDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.models.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
     User findById(Long userId);
 
     List<User> findByName(String name);
-    List<User> findBySex(String sex);
-    List<User> findByAge(int age);
+    List<User> findBySex(Integer sex);
+    List<User> findByDob(LocalDate startDate, LocalDate endDate);
     List<User> findAllUsers();
     User addUser(NewUserDto user);
 

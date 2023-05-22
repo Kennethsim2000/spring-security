@@ -24,9 +24,11 @@ public class UserController {
         UserVo userResponse = UserVo.builder()
                 .id(newUser.getId())
                 .name(newUser.getName())
-                .age(newUser.getAge())
+                .dob(newUser.getDob())
                 .createTime(newUser.getCreateTime())
                 .administrator(newUser.getAdministrator())
+                .password(newUser.getPassword())
+                .sex(newUser.getSex())
                 .build();
         return CommonResult.success(userResponse, "User added");
     }
@@ -47,7 +49,7 @@ public class UserController {
         UserVo userResponse = UserVo.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .age(user.getAge())
+                .dob(user.getDob())
                 .createTime(user.getCreateTime())
                 .administrator(user.getAdministrator())
                 .build();
@@ -61,7 +63,7 @@ public class UserController {
             UserVo userResponse = UserVo.builder()
                     .id(user.getId())
                     .name(user.getName())
-                    .age(user.getAge())
+                    .dob(user.getDob())
                     .createTime(user.getCreateTime())
                     .administrator(user.getAdministrator())
                     .build();
@@ -89,9 +91,9 @@ public class UserController {
         return CommonResult.success(userListResponse, "users returned");
     }
 
-    @PostMapping("/getByAge")
-    public CommonResult<ListUserVo> getByAge(@RequestParam (value = "age") int age ) {
-        List<User> lst = userServiceImpl.findByAge(age);
+    @PostMapping("/getByDob")
+    public CommonResult<ListUserVo> getByDob(@RequestBody FilterDto filter ) {
+        List<User> lst = userServiceImpl.findByDob(filter.getStartDate(), filter.getEndDate());
         ListUserVo userListResponse = ListUserVo.builder()
                 .list(lst)
                 .build();
@@ -104,7 +106,7 @@ public class UserController {
         UserVo userResponse = UserVo.builder()
                 .id(updatedUser.getId())
                 .name(updatedUser.getName())
-                .age(updatedUser.getAge())
+                .dob(updatedUser.getDob())
                 .createTime(updatedUser.getCreateTime())
                 .administrator(updatedUser.getAdministrator())
                 .build();

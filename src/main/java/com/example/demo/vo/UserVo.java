@@ -2,7 +2,9 @@ package com.example.demo.vo;
 
 import jakarta.persistence.Column;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,9 +17,9 @@ public class UserVo {
 
     private String name;
 
-    private int age;
+    private LocalDate dob;
 
-    private String sex;
+    private Integer sex;
 
     private LocalDateTime createTime;
 

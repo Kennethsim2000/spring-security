@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;
 @ToString
 public class FilterDto {
     private String name;
-    private String gender;
-    private LocalDateTime startData;
+    private Integer gender;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
 }
