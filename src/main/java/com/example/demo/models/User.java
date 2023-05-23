@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -29,6 +30,9 @@ public class User {
     private Boolean Administrator;
 
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Item> items;
 
     @Override
     public String toString() {

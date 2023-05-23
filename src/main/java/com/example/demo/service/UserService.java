@@ -23,5 +23,6 @@ public interface UserService {
     User deleteById(long id);
 
     User findUser(String name, String password);
+     List<User> findAllUsers(int page);
 
 }

@@ -60,6 +60,15 @@ public class UserController {
         return CommonResult.success(userListResponse, "users returned");
     }
 
+    @GetMapping("/getPage")
+    public CommonResult<ListUserVo> getPage(@RequestParam("page") int page) {
+        List<User> lst = userServiceImpl.findAllUsers(page);
+        ListUserVo userListResponse = ListUserVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(userListResponse, "users returned");
+    }
+
     @GetMapping("/getById")
     @ResponseBody
     public CommonResult<UserVo> getById(@RequestParam (value = "userId") long userId) {

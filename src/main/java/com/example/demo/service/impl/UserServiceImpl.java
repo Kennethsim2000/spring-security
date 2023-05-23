@@ -7,6 +7,8 @@ import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,6 +52,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Override
+    public List<User> findAllUsers(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5);
+        return userRepository.findAll(pageable).getContent();
+    }
     //add a user
     @Override
     public User addUser(NewUserDto user) {
