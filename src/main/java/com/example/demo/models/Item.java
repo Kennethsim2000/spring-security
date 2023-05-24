@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Item {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 
 
