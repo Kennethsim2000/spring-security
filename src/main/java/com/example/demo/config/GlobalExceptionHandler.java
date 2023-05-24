@@ -14,8 +14,8 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @ExceptionHandler(UserNotFoundException.class)
     public CommonResult resolveException(Exception ex) {
-        logger.error("User does not exist", ex);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        logger.error("User does not exist", ex);
         CommonResult result = CommonResult.failed(ResultCode.SYSTEM_INNER_ERROR.getCode(), ResultCode.SYSTEM_INNER_ERROR.getMessage());
         request.setAttribute("response", result);
         return result;

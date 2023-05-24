@@ -8,13 +8,9 @@ import com.example.demo.utils.JwtTokenProvider;
 import com.example.demo.vo.ListUserVo;
 import com.example.demo.vo.LoginVo;
 import com.example.demo.vo.UserVo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import cn.hutool.crypto.digest.Digester;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import cn.hutool.crypto.digest.DigestAlgorithm;
@@ -39,15 +35,8 @@ public class UserController {
         if(newUser == null) {
             return CommonResult.failed(404,"User exist already");
         }
-        UserVo userResponse = UserVo.builder()
-                .id(newUser.getId())
-                .name(newUser.getName())
-                .dob(newUser.getDob())
-                .createTime(newUser.getCreateTime())
-                .administrator(newUser.getAdministrator())
-                .password(newUser.getPassword())
-                .sex(newUser.getSex())
-                .build();
+        UserVo userResponse = new UserVo();
+        BeanUtils.copyProperties(newUser,userResponse);
         return CommonResult.success(userResponse, "User added");
     }
     //get all
@@ -69,19 +58,6 @@ public class UserController {
         return CommonResult.success(userListResponse, "users returned");
     }
 
-    @GetMapping("/getById")
-    @ResponseBody
-    public CommonResult<UserVo> getById(@RequestParam (value = "userId") long userId) {
-        User user = userServiceImpl.findById(userId);
-        UserVo userResponse = UserVo.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .dob(user.getDob())
-                .createTime(user.getCreateTime())
-                .administrator(user.getAdministrator())
-                .build();
-        return CommonResult.success(userResponse, "User found");
-    }
 
     @DeleteMapping(path="/delete") // Map ONLY DELETE Requests
     public CommonResult<UserVo> deleteUser (@RequestBody DeletedUserDto deletedUser) {
@@ -91,14 +67,9 @@ public class UserController {
         }
         if(userServiceImpl.existsById(deletedUser.getId())){ //if user exists
             User user = userServiceImpl.deleteUser(deletedUser.getId());
-            UserVo userResponse = UserVo.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .dob(user.getDob())
-                    .createTime(user.getCreateTime())
-                    .administrator(user.getAdministrator())
-                    .build();
-            return CommonResult.success(userResponse, "User updated successfully");
+            UserVo userResponse = new UserVo();
+            BeanUtils.copyProperties(user,userResponse);
+            return CommonResult.success(userResponse, "User deleted successfully");
         } else {
             return CommonResult.failed(404,"User does not exist");
         }
@@ -138,13 +109,8 @@ public class UserController {
             return CommonResult.failed(401,"User not authorised");
         }
         User updatedUser = userServiceImpl.updateUser(user);
-        UserVo userResponse = UserVo.builder()
-                .id(updatedUser.getId())
-                .name(updatedUser.getName())
-                .dob(updatedUser.getDob())
-                .createTime(updatedUser.getCreateTime())
-                .administrator(updatedUser.getAdministrator())
-                .build();
+        UserVo userResponse = new UserVo();
+        BeanUtils.copyProperties(updatedUser,userResponse);
         return CommonResult.success(userResponse, "User updated successfully");
     }
 
@@ -166,6 +132,20 @@ public class UserController {
         }
 
     }
+//    @GetMapping("/getById")
+//    @ResponseBody
+//    public CommonResult<UserVo> getById(@RequestParam (value = "userId") long userId) {
+//        User user = userServiceImpl.findById(userId);
+//        UserVo userResponse = UserVo.builder()
+//                .id(user.getId())
+//                .name(user.getName())
+//                .dob(user.getDob())
+//                .createTime(user.getCreateTime())
+//                .administrator(user.getAdministrator())
+//                .build();
+//        return CommonResult.success(userResponse, "User found");
+//    }
+
 
 
 }

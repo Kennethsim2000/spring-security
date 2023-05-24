@@ -8,6 +8,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.security.Key;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
     @Value("${jwt.expiration}")
@@ -36,7 +38,6 @@ public class JwtTokenProvider {
             .setIssuedAt(new Date())
             .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
-        System.out.println(SECRET_KEY);
         return token;
     }
 
@@ -44,13 +45,11 @@ public class JwtTokenProvider {
         try {
             Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
             String id = claims.getId();
-            System.out.println(id);
             return Long.parseLong(id);
         } catch (JwtException e) {
             // Token validation failed
             // Handle the exception or return an appropriate value
-            System.out.println(e.getMessage());
-            System.out.println("code encountered exception");
+            log.info(e.getMessage());
             return -1;
         }
     }
