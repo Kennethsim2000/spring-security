@@ -5,21 +5,17 @@ import com.example.demo.dto.*;
 import com.example.demo.models.User;
 import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.utils.JwtTokenProvider;
-import com.example.demo.vo.ListUserVo;
-import com.example.demo.vo.LoginVo;
-import com.example.demo.vo.UserVo;
+import com.example.demo.vo.*;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import cn.hutool.crypto.digest.DigestAlgorithm;
 
 
-import java.security.Key;
-import java.util.Date;
 import java.util.List;
-
+@Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/user")
 @RestController
@@ -47,6 +43,15 @@ public class UserController {
                 .list(lst)
                 .build();
         return CommonResult.success(userListResponse, "users returned");
+    }
+
+    @GetMapping("/getItemStats")
+    public CommonResult<ListItemStatsVo> getItemStats() {
+        List<ItemStatsAgeVo> lst = userServiceImpl.groupUserByDobAndItemCategory();
+        ListItemStatsVo itemsStatsListResponse = ListItemStatsVo.builder()
+                .list(lst)
+                .build();
+        return CommonResult.success(itemsStatsListResponse, "Items stats returned");
     }
 
     @GetMapping("/getPage")
@@ -77,7 +82,7 @@ public class UserController {
 
     @PostMapping("/getByName")
     public CommonResult<ListUserVo> getByName(@RequestBody FilterDto filter ) {
-        List<User> lst = userServiceImpl.findByName(filter.getName());
+        List<User> lst = userServiceImpl.findByName(filter.getName(), filter.getPageNumber());
         ListUserVo userListResponse = ListUserVo.builder()
                 .list(lst)
                 .build();
@@ -86,7 +91,7 @@ public class UserController {
 
     @PostMapping("/getByGender")
     public CommonResult<ListUserVo> getByGender(@RequestBody FilterDto filter ) {
-        List<User> lst =  userServiceImpl.findBySex(filter.getGender());
+        List<User> lst =  userServiceImpl.findBySex(filter.getGender(), filter.getPageNumber());
         ListUserVo userListResponse = ListUserVo.builder()
                 .list(lst)
                 .build();
@@ -95,7 +100,8 @@ public class UserController {
 
     @PostMapping("/getByDob")
     public CommonResult<ListUserVo> getByDob(@RequestBody FilterDto filter ) {
-        List<User> lst = userServiceImpl.findByDob(filter.getStartDate(), filter.getEndDate());
+        System.out.println(filter);
+        List<User> lst = userServiceImpl.findByDob(filter.getStartDate(), filter.getEndDate(), filter.getPageNumber());
         ListUserVo userListResponse = ListUserVo.builder()
                 .list(lst)
                 .build();

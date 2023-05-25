@@ -27,16 +27,17 @@ public class JwtTokenProvider {
 
 
     long expirationMillis = 3600 * 1000;
-    Date expirationDate = new Date(System.currentTimeMillis() + expirationMillis);
     private static Key SECRET_KEY ;
     private ObjectMapper objectMapper=new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public String generateToken(User user, Key key) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expirationMillis);
         SECRET_KEY = key;
         String token = null;
         token = Jwts.builder()
             .setId(String.valueOf(user.getId()))
             .setIssuedAt(new Date())
-            .setExpiration(expirationDate)
+            .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
         return token;
     }

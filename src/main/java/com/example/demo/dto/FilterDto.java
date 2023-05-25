@@ -17,4 +17,6 @@ public class FilterDto {
 
     private LocalDate endDate;
 
+    private Integer pageNumber;
+
 }
