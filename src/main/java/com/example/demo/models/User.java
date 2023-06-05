@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,17 +23,20 @@ public class User {
     public User() {
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dob;
 
     private Integer sex; //1 is male, 0 is female
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime CreateTime;
 
     private Boolean Administrator;
 
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Item> items;
 
     @Override
