@@ -23,36 +23,22 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration}")
     private int expiration;
 
-    private static final String SECRET = "mySecret";
+    private static final String SECRET = "lQWsFF+SWnbZM7iH1qZjCTHGEpvcShZ1Zw+jNEpDkbg=";
 
 
     long expirationMillis = 3600 * 1000;
-    private static Key SECRET_KEY ;
-    private ObjectMapper objectMapper=new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    public String generateToken(User user, Key key) {
+
+    public String generateToken(User user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
-        SECRET_KEY = key;
         String token = null;
         token = Jwts.builder()
             .setId(String.valueOf(user.getId()))
             .setIssuedAt(new Date())
             .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, SECRET).compact();
         return token;
     }
 
-    public long validateToken(String token) {
-        try {
-            Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-            String id = claims.getId();
-            return Long.parseLong(id);
-        } catch (JwtException e) {
-            // Token validation failed
-            // Handle the exception or return an appropriate value
-            log.info(e.getMessage());
-            return -1;
-        }
-    }
 
 }

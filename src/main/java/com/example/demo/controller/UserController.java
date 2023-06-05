@@ -66,10 +66,6 @@ public class UserController {
 
     @DeleteMapping(path="/delete") // Map ONLY DELETE Requests
     public CommonResult<UserVo> deleteUser (@RequestBody DeletedUserDto deletedUser) {
-        long userId = provider.validateToken(deletedUser.getToken());
-        if(userId != deletedUser.getId()) {
-            return CommonResult.failed(401,"User not authorised");
-        }
         if(userServiceImpl.existsById(deletedUser.getId())){ //if user exists
             User user = userServiceImpl.deleteUser(deletedUser.getId());
             UserVo userResponse = new UserVo();
@@ -110,11 +106,8 @@ public class UserController {
 
     @PutMapping("/update")
     public CommonResult<UserVo> updateUser(@RequestBody UserDto user) {
-        long userId = provider.validateToken(user.getToken());
-        if(userId != user.getId()) {
-            return CommonResult.failed(401,"User not authorised");
-        }
         User updatedUser = userServiceImpl.updateUser(user);
+        System.out.println("updated user is " + updatedUser);
         UserVo userResponse = new UserVo();
         BeanUtils.copyProperties(updatedUser,userResponse);
         return CommonResult.success(userResponse, "User updated successfully");
@@ -125,7 +118,7 @@ public class UserController {
         User userFound = userServiceImpl.findUser(loginUser.getName(), loginUser.getPassword());
         String token = null;
         if(userFound != null) { //if login successful
-             token = provider.generateToken(userFound, Keys.secretKeyFor(SignatureAlgorithm.HS256));
+             token = provider.generateToken(userFound);
         }
         LoginVo loginResponse = LoginVo.builder()
                 .loginUser(userFound)

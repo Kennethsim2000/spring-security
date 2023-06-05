@@ -23,9 +23,8 @@ public class Item {
 
     private String itemCategory;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId")
-    @JsonIgnore
     private User user;
 
 
