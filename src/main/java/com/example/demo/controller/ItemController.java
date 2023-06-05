@@ -17,7 +17,7 @@ public class ItemController {
     private ItemServiceImpl itemServiceImpl;
     @PostMapping("/add")
     public CommonResult<ItemVo> addUser(@RequestBody ItemDto item) {
-        //test
+        //hello
         Item newItem = itemServiceImpl.addItem(item);
         if(newItem == null) {
             return CommonResult.failed(404,"Item already exist");
