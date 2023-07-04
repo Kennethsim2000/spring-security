@@ -16,6 +16,32 @@ spec:
         - name: demokube
           image: kennethsim2907/demo:tag3
           env:
+            - name: DB_HOST   # Setting Database host address
+              value: mysql
+            - name: DB_NAME  # Setting Database name
+              value: work
+            - name: DB_USERNAME  # Setting Database username
+              value: root
+            - name: DB_PASSWORD # Setting Database password
+              value: Kenneth2907
           ports:
-            - containerPort: 3306
-              name: mysql
+            - containerPort: 8080
+# This seperator --- below is MANDATORY!!!
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-service
+spec:
+  selector:
+    app: test-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort
+
+
+
+
