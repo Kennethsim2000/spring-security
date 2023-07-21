@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.models.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

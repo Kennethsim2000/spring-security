@@ -1,7 +1,6 @@
 package com.example.demo.models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +21,6 @@ public class Item {
     private String itemDescription;
 
     private String itemCategory;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "userId")
-    private User user;
 
 
 }

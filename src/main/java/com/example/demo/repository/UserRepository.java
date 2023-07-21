@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.models.User;
+import com.example.demo.models.UserEntity;
 import com.example.demo.vo.ItemStatsDobVo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,21 +11,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByName(String name, Pageable pageable);
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    UserEntity findByName(String name);
 
-    List<User> findBySex(Integer sex, Pageable pageable);
+    List<UserEntity> findBySex(Integer sex, Pageable pageable);
 
     Boolean existsByName(String name);
 
-    @Query("SELECT u FROM User u WHERE u.dob BETWEEN :startDate AND :endDate")
-    List<User> findByDob(LocalDate startDate, LocalDate endDate, Pageable pageable);
+    @Query("SELECT u FROM UserEntity u WHERE u.dob BETWEEN :startDate AND :endDate")
+    List<UserEntity> findByDob(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
-    @Query("SELECT u FROM User u WHERE u.name = :name AND u.password = :password")
-    User findByNameAndPassword(String name, String password);
-
-    @Query("SELECT new com.example.demo.vo.ItemStatsDobVo(u.dob, i.itemCategory, COUNT(i)) FROM User u JOIN u.items i GROUP BY u.dob, i.itemCategory ORDER BY u.dob DESC")
-    List<ItemStatsDobVo> groupUserByDobAndItemCategory();
+    @Query("SELECT u FROM UserEntity u WHERE u.name = :name AND u.password = :password")
+    UserEntity findByNameAndPassword(String name, String password);
 
 
 

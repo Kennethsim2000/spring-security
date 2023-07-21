@@ -1,6 +1,6 @@
 package com.example.demo.vo;
 
-import com.example.demo.models.User;
+import com.example.demo.models.UserEntity;
 import lombok.*;
 
 @Getter
@@ -13,6 +13,6 @@ public class ItemVo {
     private String itemName;
     private String itemDescription;
     private String itemCategory;
-    private User user;
+    private UserEntity user;
 
 }

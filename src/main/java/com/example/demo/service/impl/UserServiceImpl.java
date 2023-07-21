@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.UserNotFoundException;
 import com.example.demo.dto.NewUserDto;
 import com.example.demo.dto.UserDto;
-import com.example.demo.models.User;
+import com.example.demo.models.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.vo.ItemStatsAgeVo;
@@ -26,24 +26,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public User findById(Long userId) {
+    public UserEntity findById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
-    @Override
-    public List<User> findByName(String name, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
-        return userRepository.findByName(name, pageable);
-    }
+
 
     @Override
-    public List<User> findBySex(Integer gender, int pageNumber) {
+    public List<UserEntity> findBySex(Integer gender, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, 5);
         return userRepository.findBySex(gender, pageable);
     }
 
     @Override
-    public List<User> findByDob(LocalDate startDate, LocalDate endDate, int pageNumber) {
+    public List<UserEntity> findByDob(LocalDate startDate, LocalDate endDate, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, 5);
         return userRepository.findByDob(startDate, endDate, pageable);
     }
@@ -51,32 +47,16 @@ public class UserServiceImpl implements UserService {
 
     //return all users
     @Override
-    public List<User> findAllUsers() {
+    public List<UserEntity> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public List<User> findAllUsers(int page) {
+    public List<UserEntity> findAllUsers(int page) {
         Pageable pageable = PageRequest.of(page - 1, 5);
         return userRepository.findAll(pageable).getContent();
     }
 
-    @Override
-    public List<ItemStatsAgeVo> groupUserByDobAndItemCategory() {
-        List<ItemStatsDobVo> statsDobList = userRepository.groupUserByDobAndItemCategory();
-        List<ItemStatsAgeVo> statsAgeList = new ArrayList<>();
-        for (ItemStatsDobVo statsDob : statsDobList) {
-            LocalDate currentDate = LocalDate.now();
-            Integer age = Period.between(statsDob.getDob(), currentDate).getYears();
-            ItemStatsAgeVo statsAge = new ItemStatsAgeVo();
-            BeanUtils.copyProperties(statsDob, statsAge);
-            statsAge.setAge(age);
-            if(!presentInList(statsAgeList, statsAge)) {
-                statsAgeList.add(statsAge);
-            }
-        }
-        return statsAgeList;
-    }
 
     public boolean presentInList(List<ItemStatsAgeVo> lst,  ItemStatsAgeVo statsAge) {
         boolean present = false;
@@ -91,11 +71,11 @@ public class UserServiceImpl implements UserService {
 
     //add a user
     @Override
-    public User addUser(NewUserDto user) {
+    public UserEntity addUser(NewUserDto user) {
         if(userRepository.existsByName(user.getName())) {
             return null;
         }
-        User newUser = new User();
+        UserEntity newUser = new UserEntity();
         newUser.setDob(user.getDob());
         newUser.setName(user.getName());
         newUser.setSex(user.getSex());
@@ -106,8 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserDto user) {
-        User selectedUser =  userRepository.findById(user.getId())
+    public UserEntity updateUser(UserDto user) {
+        UserEntity selectedUser =  userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
         selectedUser.setName(user.getName());
         selectedUser.setDob(user.getDob());
@@ -119,8 +99,8 @@ public class UserServiceImpl implements UserService {
 
     //delete the user based on id
     @Override
-    public User deleteUser(long id) {
-        User user = userRepository.findById(id).orElse(null);
+    public UserEntity deleteUser(long id) {
+        UserEntity user = userRepository.findById(id).orElse(null);
         userRepository.deleteById(id);
         return user;
     }
@@ -133,14 +113,14 @@ public class UserServiceImpl implements UserService {
 
     //Delete user by id and return the deleted user
     @Override
-    public User deleteById(long id) {
-        Optional<User> deletedUser = userRepository.findById(id);
+    public UserEntity deleteById(long id) {
+        Optional<UserEntity> deletedUser = userRepository.findById(id);
         userRepository.deleteById(id);
         return deletedUser.orElse(null);
     }
 
     @Override
-    public User findUser(String name, String password) {
+    public UserEntity findUser(String name, String password) {
         return userRepository.findByNameAndPassword(name, password);
     }
 

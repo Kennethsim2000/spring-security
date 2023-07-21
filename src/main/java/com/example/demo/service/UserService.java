@@ -2,31 +2,28 @@ package com.example.demo.service;
 
 import com.example.demo.dto.NewUserDto;
 import com.example.demo.dto.UserDto;
-import com.example.demo.models.User;
+import com.example.demo.models.UserEntity;
 import com.example.demo.vo.ItemStatsAgeVo;
-import com.example.demo.vo.ItemStatsDobVo;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
-    User findById(Long userId);
+    UserEntity findById(Long userId);
 
-    List<User> findByName(String name, int pageNumber);
-    List<User> findBySex(Integer sex, int pageNumber);
-    List<User> findByDob(LocalDate startDate, LocalDate endDate, int pageNumber);
-    List<User> findAllUsers();
-    User addUser(NewUserDto user);
+    List<UserEntity> findBySex(Integer sex, int pageNumber);
+    List<UserEntity> findByDob(LocalDate startDate, LocalDate endDate, int pageNumber);
+    List<UserEntity> findAllUsers();
+    UserEntity addUser(NewUserDto user);
 
-    User updateUser(UserDto user);
-    User deleteUser(long id);
+    UserEntity updateUser(UserDto user);
+    UserEntity deleteUser(long id);
     Boolean existsById(long id);
 
-    User deleteById(long id);
+    UserEntity deleteById(long id);
 
-    User findUser(String name, String password);
-     List<User> findAllUsers(int page);
+    UserEntity findUser(String name, String password);
+     List<UserEntity> findAllUsers(int page);
 
-     List<ItemStatsAgeVo> groupUserByDobAndItemCategory();
 
 }

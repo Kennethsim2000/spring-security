@@ -1,20 +1,12 @@
 package com.example.demo.utils;
 
-import com.example.demo.models.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
+import com.example.demo.models.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.security.Key;
 import java.util.Date;
 
 @Slf4j
@@ -28,7 +20,7 @@ public class JwtTokenProvider {
 
     long expirationMillis = 3600 * 1000;
 
-    public String generateToken(User user) {
+    public String generateToken(UserEntity user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
         String token = null;
